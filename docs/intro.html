@@ -112,7 +112,7 @@ them extremely performant, with automatic fallback on older browsers.</p>
 <p>The library and largest theme is less than 3kb when minified and compressed.</p>
 <p>All of <a href="http://github.hubspot.com/odometer/api/themes/">the themes</a> can be resized by setting the <code>font-size</code> of the <code>.odometer</code> element.</p>
 <h2>Usage</h2>
-<p><strong>The simplest possible usage is just including <a href="https://raw.github.com/HubSpot/odometer/v0.3.6/odometer.min.js">the javascript</a> and a <a href="http://github.hubspot.com/odometer/api/themes/">theme css</a>
+<p><strong>The simplest possible usage is just including <a href="https://raw.github.com/HubSpot/odometer/v0.4.2/odometer.min.js">the javascript</a> and a <a href="http://github.hubspot.com/odometer/api/themes/">theme css</a>
 file on your page.  Add the <code>odometer</code> class to any numbers you&#39;d like to animate on change.  You&#39;re done.</strong></p>
 <p>Just set the <code>innerHTML</code>, <code>innerText</code>, or use jQuery&#39;s <code>.text()</code> or <code>.html()</code> methods to change their contents, and the animation
 will happen automatically.  Any libraries you&#39;re using to update their value, provided they don&#39;t update by erasing and rerendering
@@ -123,20 +123,24 @@ the <code>odometer</code> element, will work just fine.</p>
 
 <p>Play with this simple example on <a href="http://jsfiddle.net/adamschwartz/rx6BQ/">jsFiddle</a>.</p>
 <h2>Advanced</h2>
-<p>If you need to, you can set options by creating a <code>odometerOptions</code> object:</p>
+<p>You can set options by creating a <code>odometerOptions</code> object:</p>
 <pre><code class="lang-javascript">window.odometerOptions = {
   auto: <span class="literal">false</span>, <span class="comment">// Don't automatically initialize everything with class 'odometer'</span>
   selector: <span class="string">'.my-numbers'</span>, <span class="comment">// Change the selector used to automatically find things to be animated</span>
-  format: <span class="string">'.ddd'</span>, <span class="comment">// Change how digit groups are formatted</span>
+  format: <span class="string">'(,ddd).dd'</span>, <span class="comment">// Change how digit groups are formatted, and how many digits are shown after the decimal point</span>
   duration: <span class="number">3000</span>, <span class="comment">// Change how long the javascript expects the CSS animation to take</span>
-  theme: <span class="string">'car'</span> <span class="comment">// Specify the theme (if you have more than one theme css file on the page)</span>
+  theme: <span class="string">'car'</span>, <span class="comment">// Specify the theme (if you have more than one theme css file on the page)</span>
+  animation: <span class="string">'count'</span> <span class="comment">// Count is a simpler animation method which just increments the value,</span>
+                     <span class="comment">// use it when you're looking for something more subtle.</span>
 };</code></pre>
 <p>You can manually initialize an odometer with the global <code>Odometer</code>:</p>
 <pre><code class="lang-javascript"><span class="keyword">var</span> el = document.querySelector(<span class="string">'.some-element'</span>);
 
-od = Odometer({
+od = <span class="keyword">new</span> Odometer({
   el: el,
   value: <span class="number">333555</span>,
+
+  <span class="comment">// Any option (other than auto and selector) can be passed in here</span>
   format: <span class="string">''</span>,
   theme: <span class="string">'digital'</span>
 });
@@ -144,6 +148,15 @@ od = Odometer({
 od.update(<span class="number">555</span>)
 <span class="comment">// or</span>
 el.innerHTML = <span class="number">555</span></code></pre>
+<h2>Format</h2>
+<p>The format option allows you to configure how the digit groups are formatted,
+and how many digits are shown after the decimal point.</p>
+<h2>Format      |  Example</h2>
+<p><code>(,ddd)</code>    |  12,345,678
+<code>(,ddd).dd</code> |  12,345,678.09
+<code>(.ddd),dd</code> |  12.345.678,09
+<code>( ddd),dd</code> |  12 345 678,09
+<code>d</code>         |  12345678</p>
 <h2>Browser Support</h2>
 <p>Odometer is intended to support IE8+, FF4+, Safari 6+, and Chrome.</p>
 <h2>Dependencies</h2>
